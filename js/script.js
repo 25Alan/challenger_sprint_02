@@ -1,7 +1,34 @@
-const PALABRAS = ['alura','html','css','javascript','git','node'];
+const PALABRAS = ['alura','html','css','express','git','node'];
 
-var maxIntento = PALABRAS[Math.floor(Math.random() * PALABRAS.length)];
+localStorage.setItem('palabrasJuego',JSON.stringify(PALABRAS));
 
+//const palabrasExtraidasLocal = JSON.parse(localStorage.getItem('data'));
+
+var maxIntento = PALABRAS[Math.floor(Math.random() * PALABRAS.length)].length;
+
+function completarLineas () {
+    for (let i = 1; i <= maxIntento; i++){
+        dibujarLinea(i);
+    }    
+}
+
+function dibujarLinea (x,char) {
+    char = char || "";
+
+    canvas.fillStyle = 'white';
+    canvas.strokeStyle = "white";
+    canvas.beginPath();
+    canvas.moveTo(x*40,50);
+    canvas.lineTo(x*40+20,50);
+    canvas.stroke(); 
+    canvas.font = "30px serif";
+    canvas.fillText(char,x*40.2,48,18)
+}
+
+window.onload = ((e) => {
+    console.log("hola");
+    completarLineas();
+})
 
 /* CANVAS */
 var canvas = document.querySelector("canvas").getContext("2d");
