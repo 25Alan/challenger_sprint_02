@@ -1,83 +1,173 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    text-decoration: none;
-    outline: 1px solid red !important;
-    
-  color: white;
-  background-color: black;
-}
+/* PANTALLA DE JUEGO (pagGame.html) */
 
-body {
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
-
-header {
-    width: 100vw;
-    height: 10vh;
-    display: flex;
-    justify-content: flex-start;
-    padding: 5px 20px;
-}
-
-.containerLogo {
-    height: 100%;
-}
-
-.containerLogo img {
-    height: 100%;
-}
-
-main {
-    height: 90vh;
-    width: 100vw;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
-
-main .containerGame {
-    height: 100%;    
+.juego {
+    flex: 1;
     width: 100%;
+    max-width: 720px;
+    padding: 0 16px 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+}
+
+.containerGame {
+    width: 100%;
+    padding: 1.5rem 1rem 1rem;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: flex-start;
+    gap: 0.6rem;
 }
 
-main canvas {
-    background-color: black;
-    height: 70%;
-}
-
-main .containerButton {
-    height: 30%;    
-    width: 50%;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-}
-
+/* Caja fija: las 6 imágenes tienen tamaños distintos y así no "saltan" */
 .ahorcadoImage {
-    height: 100%;
-    background-color: gray;
+    width: min(220px, 50vw);
+    height: min(220px, 34vh);
+    object-fit: contain;
+}
+
+/* El canvas mide 400x100: se achica manteniendo la proporción */
+.containerGame canvas {
+    width: 100%;
+    max-width: 440px;
+    height: auto;
+}
+
+.erradas {
+    min-height: 2rem;
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.erradasTitulo {
+    color: var(--tiza-suave);
 }
 
 .letrasErradas {
-    min-height: 2rem;
-    font-size: 1.5rem;
-    letter-spacing: 0.3rem;
-    color: hsl(0, 80%, 65%);
+    font-size: 1.6rem;
+    letter-spacing: 0.35rem;
+    color: var(--error);
 }
 
 .mensaje {
-    min-height: 2rem;
-    font-size: 1.5rem;
-    font-weight: bold;
+    min-height: 2.2rem;
+    font-size: 1.8rem;
+    text-align: center;
+}
+
+.mensaje.gano {
+    color: var(--acierto);
+}
+
+.mensaje.perdio {
+    color: var(--error);
+}
+
+.containerButton {
+    width: 100%;
+    max-width: 440px;
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+}
+
+.containerButton .boton {
+    flex: 1;
+}
+
+/* ---------- TECLADO EN PANTALLA: solo en pantallas chicas o táctiles ---------- */
+.teclado {
+    display: none;
+    width: 100%;
+    max-width: 520px;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.filaTeclado {
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+}
+
+.tecla {
+    flex: 1;
+    max-width: 46px;
+    height: 48px;
+
+    font-family: inherit;
+    font-size: 1.4rem;
+    color: var(--tiza);
+    background-color: var(--pizarra-luz);
+    border: 2px solid var(--tiza-tenue);
+    border-radius: 8px;
+    cursor: pointer;
+    touch-action: manipulation;
+    transition: background-color 0.15s, transform 0.1s;
+}
+
+.tecla:not(:disabled):hover {
+    border-color: var(--tiza-suave);
+}
+
+.tecla:not(:disabled):active {
+    transform: scale(0.94);
+}
+
+.tecla.acierto {
+    background-color: var(--acierto);
+    border-color: var(--acierto);
+    color: var(--pizarra);
+}
+
+.tecla.error {
+    background-color: transparent;
+    border-color: var(--error);
+    color: var(--error);
+    text-decoration: line-through;
+}
+
+.tecla:disabled {
+    cursor: default;
+}
+
+.teclado.terminado .tecla:not(.acierto):not(.error) {
+    opacity: 0.4;
+}
+
+@media (max-width: 768px), (pointer: coarse) {
+    .teclado {
+        display: flex;
+    }
+
+    .ahorcadoImage {
+        height: min(180px, 24vh);
+    }
+}
+
+@media (max-width: 480px) {
+    .encabezado {
+        padding: 10px 16px;
+    }
+
+    .juego {
+        gap: 12px;
+    }
+
+    .containerGame {
+        padding: 1rem 0.5rem 0.6rem;
+    }
+
+    .mensaje {
+        font-size: 1.5rem;
+    }
+
+    .filaTeclado {
+        gap: 4px;
+    }
 }

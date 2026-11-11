@@ -1,32 +1,36 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- <link rel="stylesheet" href="../css/reset.css"> -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap">
+    <link rel="stylesheet" href="../css/tema.css">
     <link rel="stylesheet" href="../css/stylePag1NewGame.css">
 
     <title>AHORCADO - AGREGAR PALABRA</title>
 </head>
 
 <body>
-    <header>
-        <div class="containerLogo">
-            <img src="../asset/Vector.svg" alt="logo" id="logo">
-        </div>
+    <header class="encabezado">
+        <a href="../index.html">
+            <img class="tiza" src="../asset/Vector.svg" alt="logo">
+            <span>Volver al inicio</span>
+        </a>
     </header>
-    <main>
+    <main class="pizarron tarjetaPalabra">
         <h2>Agregar palabra</h2>
-        <input class="inputPalabra" type="text" maxlength="8" placeholder="8 letras maximo" autocomplete="off">
-        <p class="aviso"></p>
+        <p class="ayuda">Solo letras, sin acentos ni números</p>
+        <input class="inputPalabra" type="text" maxlength="8" placeholder="Máximo 8 letras"
+            autocomplete="off" autocapitalize="characters" spellcheck="false">
+        <p class="aviso" role="alert"></p>
         <div class="containerButton">
-            <button class="button botonGuardar">Guardar y empezar</button>
-            <button class="button">
-               <a href="../index.html">Cancelar</a>
-            </button>
+            <button class="boton boton-primario botonGuardar">Guardar y empezar</button>
+            <a class="boton boton-secundario" href="../index.html">Cancelar</a>
         </div>
     </main>
 

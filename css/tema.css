@@ -1,0 +1,166 @@
+/* =========================================================
+   TEMA "PIZARRÓN" — estilos compartidos por las 3 páginas
+   ========================================================= */
+
+:root {
+    --pizarra: #1F3B33;
+    --pizarra-clara: #2A4A40;
+    --pizarra-luz: #33584C;
+    --tiza: #F4F1E8;
+    --tiza-suave: rgba(244, 241, 232, 0.65);
+    --tiza-tenue: rgba(244, 241, 232, 0.15);
+    --acento: #F2C14E;
+    --acierto: #7BC47F;
+    --error: #E86A5C;
+    --madera: #7A5230;
+    --madera-oscura: #5C3D24;
+
+    --fuente: 'Patrick Hand', 'Comic Sans MS', 'Segoe Print', cursive;
+    --radio: 10px;
+    --sombra: 0 12px 30px rgba(0, 0, 0, 0.35);
+}
+
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    color-scheme: dark;
+}
+
+body {
+    min-height: 100vh;
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    background-color: var(--pizarra);
+    background-image:
+        radial-gradient(ellipse at 50% 30%, rgba(255, 255, 255, 0.06), transparent 65%),
+        radial-gradient(ellipse at 50% 120%, rgba(0, 0, 0, 0.35), transparent 60%);
+    background-attachment: fixed;
+
+    color: var(--tiza);
+    font-family: var(--fuente);
+    font-size: 1.15rem;
+    line-height: 1.4;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+img {
+    display: block;
+}
+
+/* Dibujos y logo en color tiza */
+.tiza {
+    filter: brightness(0) invert(0.95);
+}
+
+/* ---------- ENCABEZADO ---------- */
+.encabezado {
+    width: 100%;
+    max-width: 960px;
+    padding: 16px;
+    display: flex;
+    align-items: center;
+}
+
+.encabezado a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.3rem;
+    color: var(--tiza-suave);
+    transition: color 0.2s;
+}
+
+.encabezado a:hover {
+    color: var(--tiza);
+}
+
+.encabezado img {
+    height: 36px;
+}
+
+/* ---------- PIZARRÓN (tarjeta con marco de madera) ---------- */
+.pizarron {
+    background-color: var(--pizarra-clara);
+    background-image: radial-gradient(ellipse at 50% 0%, rgba(255, 255, 255, 0.05), transparent 70%);
+    border: 10px solid var(--madera);
+    border-bottom-width: 14px;
+    border-radius: var(--radio);
+    box-shadow:
+        inset 0 0 40px rgba(0, 0, 0, 0.35),
+        inset 0 0 0 2px var(--madera-oscura),
+        var(--sombra);
+}
+
+/* ---------- BOTONES ---------- */
+.boton {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 160px;
+    padding: 0.55rem 1.5rem;
+
+    font-family: inherit;
+    font-size: 1.3rem;
+    line-height: 1.2;
+    border: 2px solid transparent;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: transform 0.1s, background-color 0.2s, filter 0.2s;
+}
+
+.boton:active {
+    transform: translateY(1px) scale(0.98);
+}
+
+.boton:focus-visible,
+.tecla:focus-visible,
+input:focus-visible {
+    outline: 3px solid var(--acento);
+    outline-offset: 3px;
+}
+
+.boton-primario {
+    background-color: var(--acento);
+    color: var(--pizarra);
+    font-weight: bold;
+}
+
+.boton-primario:hover {
+    filter: brightness(1.08);
+}
+
+.boton-secundario {
+    background-color: transparent;
+    color: var(--tiza);
+    border-color: var(--tiza-suave);
+}
+
+.boton-secundario:hover {
+    background-color: var(--tiza-tenue);
+    border-color: var(--tiza);
+}
+
+@media (max-width: 480px) {
+    .pizarron {
+        border-width: 6px;
+        border-bottom-width: 9px;
+    }
+
+    .boton {
+        min-width: 0;
+        font-size: 1.2rem;
+    }
+}

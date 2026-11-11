@@ -1,30 +1,39 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap">
+    <link rel="stylesheet" href="../css/tema.css">
     <link rel="stylesheet" href="../css/pagGame.css">
 
-    <title>GAME</title>
+    <title>AHORCADO - JUEGO</title>
 </head>
 <body>
-    <header>
-        <div class="containerLogo">
-            <img src="../asset/Vector.svg" alt="logo">
-        </div>
+    <header class="encabezado">
+        <a href="../index.html">
+            <img class="tiza" src="../asset/Vector.svg" alt="logo">
+            <span>Volver al inicio</span>
+        </a>
     </header>
-    <main>
-        <section class="containerGame">
-            <img class ="ahorcadoImage" src="../asset/ahorcado-1.svg" alt="ahorcado">
-            <canvas width="400" height="100"></canvas>
-            <p class="letrasErradas"></p>
-            <p class="mensaje"></p>
+    <main class="juego">
+        <section class="pizarron containerGame">
+            <img class="ahorcadoImage tiza" src="../asset/ahorcado-1.svg" alt="ahorcado">
+            <canvas width="400" height="100" aria-label="Palabra a adivinar"></canvas>
+            <div class="erradas">
+                <span class="erradasTitulo">Erradas:</span>
+                <span class="letrasErradas"></span>
+            </div>
+            <p class="mensaje" role="status"></p>
         </section>
+        <section class="teclado" aria-label="Teclado"></section>
         <section class="containerButton">
-            <button class="button botonNuevoJuego">New Game</button>
-            <button class="button botonDesistir">Desist</button>
+            <button class="boton boton-primario botonNuevoJuego">Nuevo juego</button>
+            <button class="boton boton-secundario botonDesistir">Desistir</button>
         </section>
     </main>
 
