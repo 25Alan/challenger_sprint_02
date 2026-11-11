@@ -129,9 +129,64 @@ document.addEventListener('keydown', (e) => {
     procesarLetra(letra);
 });
 
+/* AGREGAR PALABRA */
+const LARGO_MINIMO = 2;
+const LARGO_MAXIMO = 8;
+
+const inputPalabra = document.querySelector('.inputPalabra');
+const botonGuardar = document.querySelector('.botonGuardar');
+const textoAviso = document.querySelector('.aviso');
+
+// Pasa a mayúsculas, quita acentos y descarta todo lo que no sea A-Z
+function limpiarPalabra(texto) {
+    return texto
+        .normalize('NFD')
+        .replace(/[̀-ͯ]/g, '')
+        .toUpperCase()
+        .replace(/[^A-Z]/g, '');
+}
+
+function guardarPalabra() {
+    const palabra = limpiarPalabra(inputPalabra.value);
+    const palabras = obtenerPalabras();
+
+    if (palabra.length < LARGO_MINIMO) {
+        textoAviso.textContent = `La palabra debe tener al menos ${LARGO_MINIMO} letras`;
+        inputPalabra.focus();
+        return;
+    }
+    if (palabras.includes(palabra)) {
+        textoAviso.textContent = `${palabra} ya está en la lista`;
+        inputPalabra.focus();
+        return;
+    }
+
+    localStorage.setItem(CLAVE_PALABRAS, JSON.stringify([...palabras, palabra]));
+    window.location.href = './pagGame.html';
+}
+
+if (inputPalabra && botonGuardar) {
+    inputPalabra.addEventListener('input', () => {
+        inputPalabra.value = limpiarPalabra(inputPalabra.value).slice(0, LARGO_MAXIMO);
+        textoAviso.textContent = '';
+    });
+
+    inputPalabra.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') guardarPalabra();
+    });
+
+    botonGuardar.addEventListener('click', guardarPalabra);
+    inputPalabra.focus();
+}
+
 /* INICIO */
 if (canvas) {
     window.addEventListener('load', iniciarJuego);
+
+    const botonNuevoJuego = document.querySelector('.botonNuevoJuego');
+    if (botonNuevoJuego) {
+        botonNuevoJuego.addEventListener('click', iniciarJuego);
+    }
 
     if (botonDesistir) {
         botonDesistir.addEventListener('click', () => {

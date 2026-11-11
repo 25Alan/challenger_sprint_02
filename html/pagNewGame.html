@@ -9,7 +9,7 @@
     <!-- <link rel="stylesheet" href="../css/reset.css"> -->
     <link rel="stylesheet" href="../css/stylePag1NewGame.css">
 
-    <title>AHORCADO - NEW GAME</title>
+    <title>AHORCADO - AGREGAR PALABRA</title>
 </head>
 
 <body>
@@ -19,17 +19,18 @@
         </div>
     </header>
     <main>
-        <h2>Ingresar palabra (opcional) </h2>
-        <input type="text" maxlength="8" placeholder="8 letras maximo">
+        <h2>Agregar palabra</h2>
+        <input class="inputPalabra" type="text" maxlength="8" placeholder="8 letras maximo" autocomplete="off">
+        <p class="aviso"></p>
         <div class="containerButton">
-            <button class="button">
-                <a href="./pagGame.html">Iniciar</a>
-            </button>
+            <button class="button botonGuardar">Guardar y empezar</button>
             <button class="button">
                <a href="../index.html">Cancelar</a>
             </button>
         </div>
     </main>
+
+    <script src="../js/script.js"></script>
 </body>
 
 </html>

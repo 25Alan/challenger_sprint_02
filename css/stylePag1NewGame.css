@@ -56,3 +56,9 @@ input::placeholder {
 
   background-color: hsl(60, 3%, 59%);
 }
+
+.aviso {
+  min-height: 1.5rem;
+  font-size: 1.2rem;
+  color: hsl(0, 80%, 65%);
+}
