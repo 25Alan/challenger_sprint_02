@@ -68,3 +68,16 @@ main .containerButton {
     height: 100%;
     background-color: gray;
 }
+
+.letrasErradas {
+    min-height: 2rem;
+    font-size: 1.5rem;
+    letter-spacing: 0.3rem;
+    color: hsl(0, 80%, 65%);
+}
+
+.mensaje {
+    min-height: 2rem;
+    font-size: 1.5rem;
+    font-weight: bold;
+}

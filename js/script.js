@@ -1,82 +1,143 @@
-const PALABRAS = ['alura','html','css','express','git','node'];
+/* PALABRAS */
+const PALABRAS_INICIALES = ['ALURA', 'HTML', 'CSS', 'EXPRESS', 'GIT', 'NODE'];
+const CLAVE_PALABRAS = 'palabrasJuego';
 
-localStorage.setItem('palabrasJuego',JSON.stringify(PALABRAS));
+// Lee la lista guardada; solo la crea si todavía no existe,
+// así no se pisan las palabras que agregue el usuario.
+function obtenerPalabras() {
+    let guardadas = null;
+    try {
+        guardadas = JSON.parse(localStorage.getItem(CLAVE_PALABRAS));
+    } catch (e) {
+        guardadas = null;
+    }
 
-//const palabrasExtraidasLocal = JSON.parse(localStorage.getItem('data'));
+    if (!Array.isArray(guardadas) || guardadas.length === 0) {
+        localStorage.setItem(CLAVE_PALABRAS, JSON.stringify(PALABRAS_INICIALES));
+        return PALABRAS_INICIALES;
+    }
 
-var maxIntento = PALABRAS[Math.floor(Math.random() * PALABRAS.length)].length;
-
-function completarLineas () {
-    for (let i = 1; i <= maxIntento; i++){
-        dibujarLinea(i);
-    }    
+    // Por si quedaron palabras viejas en minúsculas
+    return guardadas.map((p) => String(p).toUpperCase());
 }
 
-function dibujarLinea (x,char) {
-    char = char || "";
+/* ESTADO DEL JUEGO */
+const MAX_ERRORES = 5; // ahorcado-1.svg (inicio) ... ahorcado-6.svg (completo)
 
-    canvas.fillStyle = 'white';
-    canvas.strokeStyle = "white";
+let palabraSecreta = '';
+let letrasAcertadas = [];
+let letrasErradas = [];
+let juegoTerminado = false;
+
+/* ELEMENTOS DE LA PÁGINA */
+const elementoCanvas = document.querySelector('canvas');
+const canvas = elementoCanvas ? elementoCanvas.getContext('2d') : null;
+const imagenAhorcado = document.querySelector('.ahorcadoImage');
+const textoErradas = document.querySelector('.letrasErradas');
+const textoMensaje = document.querySelector('.mensaje');
+const botonDesistir = document.querySelector('.botonDesistir');
+
+/* DIBUJO */
+const ANCHO_GUION = 30;
+const SEPARACION = 40;
+
+function inicioX() {
+    // Centra la palabra en el canvas
+    const anchoTotal = palabraSecreta.length * SEPARACION - (SEPARACION - ANCHO_GUION);
+    return (elementoCanvas.width - anchoTotal) / 2;
+}
+
+function dibujarGuion(indice, letra) {
+    const x = inicioX() + indice * SEPARACION;
+
+    canvas.strokeStyle = 'white';
+    canvas.lineWidth = 2;
     canvas.beginPath();
-    canvas.moveTo(x*40,50);
-    canvas.lineTo(x*40+20,50);
-    canvas.stroke(); 
-    canvas.font = "30px serif";
-    canvas.fillText(char,x*40.2,48,18)
+    canvas.moveTo(x, 60);
+    canvas.lineTo(x + ANCHO_GUION, 60);
+    canvas.stroke();
+
+    if (letra) {
+        canvas.fillStyle = 'white';
+        canvas.font = '30px serif';
+        canvas.textAlign = 'center';
+        canvas.fillText(letra, x + ANCHO_GUION / 2, 55);
+    }
 }
 
-window.onload = ((e) => {
-    console.log("hola");
-    completarLineas();
-})
+function dibujarPalabra() {
+    canvas.clearRect(0, 0, elementoCanvas.width, elementoCanvas.height);
+    for (let i = 0; i < palabraSecreta.length; i++) {
+        const letra = palabraSecreta[i];
+        dibujarGuion(i, letrasAcertadas.includes(letra) ? letra : '');
+    }
+}
 
-/* CANVAS */
-var canvas = document.querySelector("canvas").getContext("2d");
+function actualizarPantalla() {
+    dibujarPalabra();
+    imagenAhorcado.src = `../asset/ahorcado-${letrasErradas.length + 1}.svg`;
+    textoErradas.textContent = letrasErradas.join(' ');
+}
 
-// canvas.fillStyle = 'white';
-// canvas.beginPath();
-// canvas.moveTo(40,50);
-// canvas.lineTo(60,50);
-// canvas.stroke();
+/* LÓGICA */
+function palabraCompleta() {
+    return [...palabraSecreta].every((letra) => letrasAcertadas.includes(letra));
+}
 
-// canvas.fillStyle = 'blue';
-// canvas.beginPath();
-// canvas.moveTo(80,50);
-// canvas.lineTo(100,50);
-// canvas.stroke();
+function terminarJuego(mensaje) {
+    juegoTerminado = true;
+    textoMensaje.textContent = mensaje;
+}
 
-// canvas.fillStyle = 'blue';
-// canvas.beginPath();
-// canvas.moveTo(120,50);
-// canvas.lineTo(140,50);
-// canvas.stroke();
+function procesarLetra(letra) {
+    if (juegoTerminado) return;
+    if (letrasAcertadas.includes(letra) || letrasErradas.includes(letra)) return;
 
-// canvas.fillStyle = 'blue';
-// canvas.beginPath();
-// canvas.moveTo(160,50);
-// canvas.lineTo(180,50);
-// canvas.stroke();
+    if (palabraSecreta.includes(letra)) {
+        letrasAcertadas.push(letra);
+    } else {
+        letrasErradas.push(letra);
+    }
 
-// canvas.fillStyle = 'blue';
-// canvas.beginPath();
-// canvas.moveTo(200,50);
-// canvas.lineTo(220,50);
-// canvas.stroke();
+    actualizarPantalla();
 
-// canvas.fillStyle = 'blue';
-// canvas.beginPath();
-// canvas.moveTo(240,50);
-// canvas.lineTo(260,50);
-// canvas.stroke();
+    if (palabraCompleta()) {
+        terminarJuego('Ganaste, Felicidades!');
+    } else if (letrasErradas.length >= MAX_ERRORES) {
+        terminarJuego(`Fin del juego. La palabra era ${palabraSecreta}`);
+    }
+}
 
-// canvas.fillStyle = 'blue';
-// canvas.beginPath();
-// canvas.moveTo(280,50);
-// canvas.lineTo(300,50);
-// canvas.stroke();
+function iniciarJuego() {
+    const palabras = obtenerPalabras();
+    palabraSecreta = palabras[Math.floor(Math.random() * palabras.length)];
+    letrasAcertadas = [];
+    letrasErradas = [];
+    juegoTerminado = false;
+    textoMensaje.textContent = '';
+    actualizarPantalla();
+}
 
-// canvas.fillStyle = 'blue';
-// canvas.beginPath();
-// canvas.moveTo(320,50);
-// canvas.lineTo(340,50);
-// canvas.stroke();
+/* TECLADO */
+document.addEventListener('keydown', (e) => {
+    if (!canvas || e.ctrlKey || e.metaKey || e.altKey) return;
+
+    const letra = e.key.toUpperCase();
+    // Solo letras A-Z: sin números, acentos ni caracteres especiales
+    if (!/^[A-Z]$/.test(letra)) return;
+
+    procesarLetra(letra);
+});
+
+/* INICIO */
+if (canvas) {
+    window.addEventListener('load', iniciarJuego);
+
+    if (botonDesistir) {
+        botonDesistir.addEventListener('click', () => {
+            if (!juegoTerminado) {
+                terminarJuego(`Fin del juego. La palabra era ${palabraSecreta}`);
+            }
+        });
+    }
+}
